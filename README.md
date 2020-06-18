@@ -1,2 +1,2 @@
 # Arduboy-Test-Codes
-A  place for testing my codes
+A  place for testing some code

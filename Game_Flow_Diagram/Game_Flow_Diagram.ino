@@ -14,6 +14,16 @@ enum class GameState
 
 GameState gameState = GameState::Character;
 
+enum class CharacterState
+{
+  Standing,
+  Running,
+  Jumping,
+  Ducking,
+};
+
+CharacterState characterState = CharacterState::Standing;
+
 void reset()
 {
   c_run = false;
@@ -41,57 +51,46 @@ void loop() {
   {
     case GameState::Character:
       CharacterInput();
-      CharacterDraw();
       break;
   }
   arduboy.display();
 
 }
 
-void CharacterDraw()
+
+void Standing()
 {
-  arduboy.clear();
-  arduboy.setCursor(0,0);
-  
-  if(c_stand == true) {
-    arduboy.print(F("Standing"));
-  }
-  if(c_jump == true) {
-    arduboy.print(F("Jumping"));
-  }
-  if(c_duck == true) {
-    arduboy.print(F("Ducking"));
-  }
-  if(c_run == true) {
-    arduboy.print(F("Running"));
-  }
-  arduboy.display();
+  arduboy.print(F("Standing"));
+}
+
+void Running()
+{
+  arduboy.print(F("Running"));
+}
+
+void Jumping()
+{
+  arduboy.print(F("Jumping"));
+}
+
+void Ducking()
+{
+  arduboy.print(F("Ducking"));
 }
 
 void CharacterInput()
 {
   if(arduboy.pressed(UP_BUTTON)) {
-    c_jump = true;
-    c_stand = false;
-    c_duck = false;
-    c_run = false;
+    Jumping();
   } else if (arduboy.pressed(DOWN_BUTTON)) {
     if (!c_jump) {
-      c_duck = true;
-      c_stand = false;
-      c_run = false;
+      Ducking();
     }
   } else if (arduboy.pressed(RIGHT_BUTTON)|| arduboy.pressed(LEFT_BUTTON)) {
     if (!c_jump) {
-      c_stand = false;
-      c_run = true;
-      c_jump = false;
-      c_duck = false;
+      Running();
     }
   } else {
-    c_stand = true;
-    c_run = false;
-    c_duck = false;
-    c_jump = false;
+    Standing();
   }
 }

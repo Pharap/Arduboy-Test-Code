@@ -51,46 +51,49 @@ void loop() {
   {
     case GameState::Character:
       CharacterInput();
+      CharacterDraw();
       break;
   }
   arduboy.display();
 
 }
 
-
-void Standing()
+void CharacterDraw()
 {
-  arduboy.print(F("Standing"));
+  switch(characterState)
+  {
+  case CharacterState::Standing:
+    arduboy.print(F("Standing"));
+    break;
+    
+  case CharacterState::Jumping:
+    arduboy.print(F("Jumping"));
+    break;
+    
+  case CharacterState::Ducking:
+    arduboy.print(F("Ducking"));
+    break;
+    
+  case CharacterState::Running:
+    arduboy.print(F("Running"));
+    break;
+  }
 }
 
-void Running()
-{
-  arduboy.print(F("Running"));
-}
-
-void Jumping()
-{
-  arduboy.print(F("Jumping"));
-}
-
-void Ducking()
-{
-  arduboy.print(F("Ducking"));
-}
 
 void CharacterInput()
 {
   if(arduboy.pressed(UP_BUTTON)) {
-    Jumping();
+    characterState = CharacterState::Jumping;
   } else if (arduboy.pressed(DOWN_BUTTON)) {
-    if (!c_jump) {
-      Ducking();
+    if (characterState != CharacterState::Jumping) {
+      characterState = CharacterState::Ducking;
     }
   } else if (arduboy.pressed(RIGHT_BUTTON)|| arduboy.pressed(LEFT_BUTTON)) {
-    if (!c_jump) {
-      Running();
+    if (characterState != CharacterState::Jumping) {
+      characterState = CharacterState::Running;
     }
   } else {
-    Standing();
+    characterState = CharacterState::Standing;
   }
 }

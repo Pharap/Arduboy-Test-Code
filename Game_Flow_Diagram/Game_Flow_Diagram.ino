@@ -2,11 +2,6 @@
 
 Arduboy2 arduboy;
 
-bool c_run;
-bool c_stand;
-bool c_jump;
-bool c_duck;
-
 enum class GameState
 {
   Character,
@@ -24,25 +19,16 @@ enum class CharacterState
 
 CharacterState characterState = CharacterState::Standing;
 
-void reset()
+void setup()
 {
-  c_run = false;
-  c_stand = true;
-  c_jump = false;
-  c_duck = false;
-}
-
-void setup() {
   arduboy.begin();
-  arduboy.clear();
-  reset();
-
 }
 
-void loop() {
-  if(!arduboy.nextFrame()) {
+void loop()
+{
+  if(!arduboy.nextFrame())
     return;
-  }
+	
   arduboy.pollButtons();
 
   arduboy.clear();
@@ -50,15 +36,15 @@ void loop() {
   switch (gameState)
   {
     case GameState::Character:
-      CharacterInput();
-      CharacterDraw();
+      updateCharacter();
+      drawCharacter();
       break;
   }
+  
   arduboy.display();
-
 }
 
-void CharacterDraw()
+void drawCharacter()
 {
   switch(characterState)
   {
@@ -80,20 +66,44 @@ void CharacterDraw()
   }
 }
 
-
-void CharacterInput()
+void updateCharacter()
 {
-  if(arduboy.pressed(UP_BUTTON)) {
-    characterState = CharacterState::Jumping;
-  } else if (arduboy.pressed(DOWN_BUTTON)) {
-    if (characterState != CharacterState::Jumping) {
-      characterState = CharacterState::Ducking;
-    }
-  } else if (arduboy.pressed(RIGHT_BUTTON)|| arduboy.pressed(LEFT_BUTTON)) {
-    if (characterState != CharacterState::Jumping) {
-      characterState = CharacterState::Running;
-    }
-  } else {
-    characterState = CharacterState::Standing;
-  }
+	switch(characterState)
+	{
+		case CharacterState::Standing:
+			updateCharacterStanding();
+			break;
+			
+		case CharacterState::Jumping:
+			updateCharacterJumping();
+			break;
+			
+		case CharacterState::Ducking:
+			updateCharacterDucking();
+			break;
+			
+		case CharacterState::Running:
+			updateCharacterRunning();
+			break;
+	}
+}
+
+void updateCharacterStanding()
+{
+	// Handle input and such...
+}
+
+void updateCharacterJumping()
+{
+	// Handle input and such...
+}
+
+void updateCharacterDucking()
+{
+	// Handle input and such...
+}
+
+void updateCharacterRunning()
+{
+	// Handle input and such...
 }
